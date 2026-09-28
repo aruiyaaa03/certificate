@@ -1,0 +1,57 @@
+@import "tailwindcss";
+
+@layer utilities {
+  .font-gothic {
+    font-family: 'UnifrakturMaguntia', 'Cinzel', serif;
+  }
+  .font-serif-header {
+    font-family: 'Cinzel', 'Playfair Display', serif;
+  }
+  .font-certificate {
+    font-family: 'Libre Baskerville', 'Times New Roman', serif;
+  }
+  .font-calligraphy {
+    font-family: 'Great Vibes', 'Alex Brush', cursive;
+  }
+  .font-stamp {
+    font-family: 'Courier Prime', monospace;
+  }
+}
+
+/* Certificate Print Specific Styles */
+@media print {
+  html, body {
+    margin: 0 !important;
+    padding: 0 !important;
+    background: #ffffff !important;
+    -webkit-print-color-adjust: exact !important;
+    print-color-adjust: exact !important;
+    color-adjust: exact !important;
+  }
+
+  .no-print {
+    display: none !important;
+  }
+
+  .print-only {
+    display: block !important;
+  }
+
+  @page {
+    size: A4 landscape;
+    margin: 0mm;
+  }
+
+  .certificate-container {
+    width: 297mm !important;
+    height: 210mm !important;
+    max-width: none !important;
+    max-height: none !important;
+    margin: 0 auto !important;
+    box-shadow: none !important;
+    border-radius: 0 !important;
+    page-break-inside: avoid !important;
+    page-break-after: avoid !important;
+    transform: none !important;
+  }
+}

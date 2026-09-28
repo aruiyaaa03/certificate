@@ -1,0 +1,6 @@
+{
+  "name": "Bangladesh SSC Certificate Studio & PDF Generator",
+  "description": "Professional editable certificate creator modeled after Bangladesh Education Board SSC certificates with live editing, signature uploads, print, and PDF export.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
