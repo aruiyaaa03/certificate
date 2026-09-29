@@ -30,6 +30,8 @@ export interface CertificateData {
   // Logo
   logoUrl?: string;
   showLogo: boolean;
+  logoSize?: number;
+  logoShape?: 'natural' | 'circle';
   
   // Course / Exam Title
   examTitle: string; // "Secondary School Certificate Examination 2023"
@@ -102,6 +104,8 @@ export const INITIAL_CERTIFICATE_DATA: CertificateData = {
   registrationNo: '1914205831/2021-2022',
   
   showLogo: true,
+  logoSize: 52,
+  logoShape: 'natural',
   examTitle: 'Secondary School Certificate Examination 2023',
   
   certifyIntro: 'This is to certify that',

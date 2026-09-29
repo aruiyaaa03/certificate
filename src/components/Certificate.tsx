@@ -319,10 +319,14 @@ export const Certificate: React.FC<CertificateProps> = ({
               />
             </h2>
 
-            {/* 3. Middle Logo (Official Crest) */}
+            {/* 3. Middle Logo (Official Crest or Custom Website Logo) */}
             {data.showLogo && (
               <div className="my-1 flex items-center justify-center">
-                <BoardLogo customLogoUrl={data.logoUrl} size={50} />
+                <BoardLogo
+                  customLogoUrl={data.logoUrl}
+                  size={data.logoSize || 52}
+                  shape={data.logoShape || 'natural'}
+                />
               </div>
             )}
 

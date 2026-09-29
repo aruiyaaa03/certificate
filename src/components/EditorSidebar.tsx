@@ -20,10 +20,16 @@ import {
   Type,
   Palette,
   PenLine,
+  Award,
+  Link as LinkIcon,
+  Trash2,
+  Eye,
+  EyeOff,
 } from 'lucide-react';
 import { convertDateToCertificateWords } from '../utils/numberToWords';
 import { SignatureModal } from './SignatureModal';
 import { DefaultSignatures } from './Signatures';
+import { BoardLogo } from './BoardLogo';
 
 interface EditorSidebarProps {
   data: CertificateData;
@@ -58,6 +64,8 @@ export const EditorSidebar: React.FC<EditorSidebarProps> = ({
     mode: 'draw',
   });
   const logoInputRef = useRef<HTMLInputElement | null>(null);
+  const [logoUrlInput, setLogoUrlInput] = useState('');
+  const [showLogoUrlInput, setShowLogoUrlInput] = useState(false);
 
   const handleSignatureModalSave = (result: {
     type: 'drawn' | 'custom' | 'default';
@@ -127,20 +135,37 @@ export const EditorSidebar: React.FC<EditorSidebarProps> = ({
     const reader = new FileReader();
     reader.onload = (event) => {
       const dataUrl = event.target?.result as string;
-      updateField('logoUrl', dataUrl);
-      updateField('showLogo', true);
+      if (!dataUrl) return;
+
+      // Single atomic state update to prevent race conditions or state overwriting
+      onChange({
+        ...data,
+        logoUrl: dataUrl,
+        showLogo: true, // Enable logo view when user explicitly uploads a custom logo
+      });
     };
     reader.readAsDataURL(file);
     e.target.value = '';
   };
 
-  // Preset configurations
+  // Preset configurations (preserving user's custom logo and showLogo toggle preference)
   const loadPreset = (presetName: 'ariyan' | 'demo' | 'dhaka' | 'rajshahi' | 'blank') => {
+    const userLogoPreferences = {
+      showLogo: data.showLogo,
+      logoUrl: data.logoUrl,
+      logoSize: data.logoSize,
+      logoShape: data.logoShape,
+    };
+
     if (presetName === 'ariyan') {
-      onChange(INITIAL_CERTIFICATE_DATA);
+      onChange({
+        ...INITIAL_CERTIFICATE_DATA,
+        ...userLogoPreferences,
+      });
     } else if (presetName === 'demo') {
       onChange({
         ...INITIAL_CERTIFICATE_DATA,
+        ...userLogoPreferences,
         institutionName: 'BOARD OF INTERMEDIATE AND SECONDARY EDUCATION',
         institutionLocation: 'JASHORE',
         schoolName: 'Collectorate School And College, Kushtia',
@@ -169,6 +194,7 @@ export const EditorSidebar: React.FC<EditorSidebarProps> = ({
     } else if (presetName === 'dhaka') {
       onChange({
         ...INITIAL_CERTIFICATE_DATA,
+        ...userLogoPreferences,
         institutionName: 'DHAKA RESIDENTIAL MODEL COLLEGE',
         institutionLocation: 'DHAKA',
         schoolName: 'Dhaka Residential Model College, Mohammadpur',
@@ -193,6 +219,7 @@ export const EditorSidebar: React.FC<EditorSidebarProps> = ({
     } else if (presetName === 'rajshahi') {
       onChange({
         ...INITIAL_CERTIFICATE_DATA,
+        ...userLogoPreferences,
         institutionName: 'RAJSHAHI COLLEGIATE SCHOOL',
         institutionLocation: 'RAJSHAHI',
         schoolName: 'Rajshahi Collegiate School, Rajshahi',
@@ -217,6 +244,7 @@ export const EditorSidebar: React.FC<EditorSidebarProps> = ({
     } else if (presetName === 'blank') {
       onChange({
         ...INITIAL_CERTIFICATE_DATA,
+        ...userLogoPreferences,
         studentName: 'Student Name Here',
         fatherName: "Father's Name",
         motherName: "Mother's Name",
@@ -326,7 +354,7 @@ export const EditorSidebar: React.FC<EditorSidebarProps> = ({
           }`}
         >
           <PenTool className="w-3.5 h-3.5" />
-          <span>Signatures</span>
+          <span>Signatures & Logo</span>
         </button>
 
         <button
@@ -541,6 +569,48 @@ export const EditorSidebar: React.FC<EditorSidebarProps> = ({
                 className="w-full px-3 py-1.5 bg-slate-50 border border-slate-300 rounded-md text-slate-900 font-bold text-xs text-center"
                 placeholder="BANGLADESH"
               />
+            </div>
+
+            {/* Quick Logo Status Banner */}
+            <div className="p-2.5 bg-slate-50 rounded-lg border border-slate-200 flex items-center justify-between">
+              <div className="flex items-center gap-2">
+                <div className="w-8 h-8 rounded-md bg-white border border-slate-200 flex items-center justify-center p-0.5">
+                  <BoardLogo
+                    customLogoUrl={data.logoUrl}
+                    size={28}
+                    shape={data.logoShape || 'natural'}
+                  />
+                </div>
+                <div>
+                  <span className="text-xs font-bold text-slate-800 block">
+                    Certificate Logo ({data.showLogo ? '✓ ON' : '✕ OFF'})
+                  </span>
+                  <span className="text-[10px] text-slate-500 block">
+                    {data.logoUrl ? 'Custom Website Logo' : 'Official Board Seal'}
+                  </span>
+                </div>
+              </div>
+
+              <div className="flex items-center gap-1.5">
+                <button
+                  type="button"
+                  onClick={() => updateField('showLogo', !data.showLogo)}
+                  className={`text-[11px] font-bold px-2 py-1 rounded transition cursor-pointer ${
+                    data.showLogo
+                      ? 'bg-emerald-100 text-emerald-800 hover:bg-emerald-200'
+                      : 'bg-slate-200 text-slate-700 hover:bg-slate-300'
+                  }`}
+                >
+                  {data.showLogo ? 'Hide (লুকান)' : 'Show (দেখান)'}
+                </button>
+                <button
+                  type="button"
+                  onClick={() => setActiveTab('signatures')}
+                  className="text-[11px] font-bold px-2 py-1 bg-indigo-50 hover:bg-indigo-100 text-indigo-700 rounded border border-indigo-200 transition cursor-pointer"
+                >
+                  Manage Logo
+                </button>
+              </div>
             </div>
 
             <div>
@@ -1023,47 +1093,223 @@ export const EditorSidebar: React.FC<EditorSidebarProps> = ({
               </div>
             </div>
 
-            {/* Center Logo / Crest Upload */}
-            <div className="p-3 bg-slate-50 rounded-lg border border-slate-200 space-y-2">
-              <div className="flex items-center justify-between">
-                <span className="font-semibold text-slate-800">Certificate Logo / Crest</span>
-                <label className="flex items-center gap-1 cursor-pointer text-slate-600">
-                  <input
-                    type="checkbox"
-                    checked={data.showLogo}
-                    onChange={(e) => updateField('showLogo', e.target.checked)}
-                    className="rounded text-rose-600"
-                  />
-                  <span>Show</span>
+            {/* Center Logo / Crest Upload & Management */}
+            <div className="p-4 bg-gradient-to-b from-slate-50 to-slate-100/70 rounded-xl border border-slate-300/80 shadow-xs space-y-3">
+              {/* Header & Show/Hide Toggle */}
+              <div className="flex items-center justify-between pb-2 border-b border-slate-200">
+                <div className="flex items-center gap-1.5">
+                  <Award className="w-4 h-4 text-rose-600" />
+                  <span className="font-bold text-xs text-slate-900">
+                    Certificate Logo / Crest (লোগো)
+                  </span>
+                </div>
+
+                {/* Show/Hide Switch with explicit status */}
+                <label className="flex items-center gap-2 cursor-pointer select-none">
+                  <span
+                    className={`text-[11px] font-bold transition ${
+                      data.showLogo ? 'text-emerald-700 font-semibold' : 'text-slate-400 font-normal'
+                    }`}
+                  >
+                    {data.showLogo ? '✓ ON (প্রদর্শিত)' : '✕ OFF (বন্ধ)'}
+                  </span>
+                  <div className="relative inline-flex items-center cursor-pointer">
+                    <input
+                      type="checkbox"
+                      checked={data.showLogo}
+                      onChange={(e) => updateField('showLogo', e.target.checked)}
+                      className="sr-only peer"
+                    />
+                    <div className="w-9 h-5 bg-slate-300 peer-focus:outline-hidden rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-slate-300 after:border after:rounded-full after:h-4 after:w-4 after:transition-all peer-checked:bg-emerald-600"></div>
+                  </div>
                 </label>
               </div>
 
-              <div className="flex items-center gap-2 pt-1">
+              {/* Status explanation */}
+              <div className="text-[11px] text-slate-600">
+                {data.showLogo ? (
+                  <p className="text-emerald-700 bg-emerald-50/80 p-2 rounded-lg border border-emerald-200/60 flex items-center gap-1.5">
+                    <Eye className="w-3.5 h-3.5 shrink-0" />
+                    <span>শো লোগো অন আছে। সার্টিফিকেট ব্যানারের নিচে লোগো প্রদর্শিত হবে।</span>
+                  </p>
+                ) : (
+                  <p className="text-slate-600 bg-amber-50/80 p-2 rounded-lg border border-amber-200/60 flex items-center gap-1.5">
+                    <EyeOff className="w-3.5 h-3.5 shrink-0 text-amber-600" />
+                    <span>শো লোগো অফ আছে। সার্টিফিকেটে কোনো লোগো দেখা যাবে না।</span>
+                  </p>
+                )}
+              </div>
+
+              {/* Live Preview Box */}
+              <div
+                className={`p-3 rounded-lg border transition flex flex-col items-center justify-center text-center ${
+                  data.showLogo
+                    ? 'bg-white border-slate-300 shadow-2xs'
+                    : 'bg-slate-100/70 border-dashed border-slate-300 opacity-60'
+                }`}
+              >
+                {data.showLogo ? (
+                  <>
+                    <div className="h-16 flex items-center justify-center">
+                      <BoardLogo
+                        customLogoUrl={data.logoUrl}
+                        size={data.logoSize || 52}
+                        shape={data.logoShape || 'natural'}
+                      />
+                    </div>
+                    <div className="mt-2 flex items-center gap-2">
+                      <span
+                        className={`text-[10px] font-bold px-2 py-0.5 rounded-full ${
+                          data.logoUrl
+                            ? 'bg-emerald-100 text-emerald-800 border border-emerald-300'
+                            : 'bg-indigo-100 text-indigo-800 border border-indigo-200'
+                        }`}
+                      >
+                        {data.logoUrl ? '✨ কাস্টম ওয়েবসাইট লোগো সক্রিয়' : '🏛️ অফিশিয়াল বোর্ড সিল (Default)'}
+                      </span>
+                    </div>
+                  </>
+                ) : (
+                  <div className="py-2 text-[11px] font-medium text-slate-500 flex flex-col items-center gap-1">
+                    <EyeOff className="w-5 h-5 text-slate-400" />
+                    <span>লোগো প্রদর্শন বন্ধ রয়েছে (Hidden)</span>
+                  </div>
+                )}
+              </div>
+
+              {/* File Input & Upload Buttons */}
+              <div className="space-y-2 pt-1">
                 <input
                   ref={logoInputRef}
                   type="file"
-                  accept="image/*"
+                  accept="image/png,image/jpeg,image/jpg,image/webp,image/svg+xml,image/gif"
                   onChange={handleLogoUpload}
                   className="hidden"
                 />
-                <button
-                  type="button"
-                  onClick={() => logoInputRef.current?.click()}
-                  className="flex items-center gap-1 px-3 py-1.5 bg-white border border-slate-300 rounded hover:bg-slate-100 transition text-slate-700 cursor-pointer"
-                >
-                  <Upload className="w-3.5 h-3.5" />
-                  <span>Upload Logo from File</span>
-                </button>
+
+                <div className="grid grid-cols-2 gap-2">
+                  <button
+                    type="button"
+                    onClick={() => logoInputRef.current?.click()}
+                    className="flex items-center justify-center gap-1.5 px-3 py-2 bg-indigo-600 hover:bg-indigo-700 text-white rounded-lg text-xs font-bold shadow-xs hover:shadow transition cursor-pointer"
+                    title="কম্পিউটার বা ফোন থেকে যেকোনো লোগো ছবি আপলোড করুন"
+                  >
+                    <Upload className="w-3.5 h-3.5" />
+                    <span>আপলোড লোগো (Upload)</span>
+                  </button>
+
+                  <button
+                    type="button"
+                    onClick={() => setShowLogoUrlInput((prev) => !prev)}
+                    className="flex items-center justify-center gap-1.5 px-3 py-2 bg-white hover:bg-slate-50 text-slate-700 border border-slate-300 rounded-lg text-xs font-semibold transition cursor-pointer"
+                    title="অনলাইন ওয়েবসাইটের লোগোর লিংক দিন"
+                  >
+                    <LinkIcon className="w-3.5 h-3.5 text-slate-500" />
+                    <span>ওয়েব লিংক (URL)</span>
+                  </button>
+                </div>
+
+                {/* Direct Image URL input */}
+                {showLogoUrlInput && (
+                  <div className="p-2.5 bg-white rounded-lg border border-slate-300 space-y-1.5 shadow-2xs">
+                    <label className="block text-[11px] font-semibold text-slate-700">
+                      লোগো ছবির সরাসরি লিংক (Image URL):
+                    </label>
+                    <div className="flex gap-1.5">
+                      <input
+                        type="url"
+                        value={logoUrlInput}
+                        onChange={(e) => setLogoUrlInput(e.target.value)}
+                        placeholder="https://example.com/logo.png"
+                        className="flex-1 px-2.5 py-1.5 bg-slate-50 border border-slate-300 rounded-md text-xs text-slate-900 focus:outline-hidden focus:border-indigo-500"
+                      />
+                      <button
+                        type="button"
+                        onClick={() => {
+                          if (logoUrlInput.trim()) {
+                            onChange({
+                              ...data,
+                              logoUrl: logoUrlInput.trim(),
+                              showLogo: true,
+                            });
+                            setShowLogoUrlInput(false);
+                            setLogoUrlInput('');
+                          }
+                        }}
+                        className="px-3 py-1.5 bg-indigo-600 text-white rounded-md text-xs font-bold hover:bg-indigo-700 transition cursor-pointer"
+                      >
+                        Apply
+                      </button>
+                    </div>
+                  </div>
+                )}
+
+                {/* Reset to Default Button */}
                 {data.logoUrl && (
                   <button
                     type="button"
                     onClick={() => updateField('logoUrl', undefined)}
-                    className="text-rose-600 hover:underline text-[11px] cursor-pointer"
+                    className="w-full flex items-center justify-center gap-1.5 py-1.5 px-2 bg-rose-50 hover:bg-rose-100 text-rose-700 border border-rose-200 rounded-lg text-xs font-medium transition cursor-pointer"
                   >
-                    Reset to Default Logo
+                    <RotateCcw className="w-3.5 h-3.5" />
+                    <span>Reset to Default Seal (মূল সিল ফিরিয়ে আনুন)</span>
                   </button>
                 )}
               </div>
+
+              {/* Adjustments: Size & Shape (When Logo is Visible) */}
+              {data.showLogo && (
+                <div className="pt-2 border-t border-slate-200/80 space-y-2.5">
+                  {/* Size slider */}
+                  <div className="space-y-1">
+                    <div className="flex justify-between text-[11px] text-slate-700 font-semibold">
+                      <span>লোগো সাইজ (Logo Size):</span>
+                      <span className="font-mono text-indigo-700">{data.logoSize || 52}px</span>
+                    </div>
+                    <input
+                      type="range"
+                      min="34"
+                      max="78"
+                      value={data.logoSize || 52}
+                      onChange={(e) => updateField('logoSize', Number(e.target.value))}
+                      className="w-full accent-indigo-600 cursor-pointer h-1.5 bg-slate-200 rounded-lg appearance-none"
+                    />
+                  </div>
+
+                  {/* Shape option for custom logos */}
+                  {data.logoUrl && (
+                    <div className="space-y-1">
+                      <span className="block text-[11px] font-semibold text-slate-700">
+                        লোগোর আকার (Shape Style):
+                      </span>
+                      <div className="grid grid-cols-2 gap-1.5 text-xs">
+                        <button
+                          type="button"
+                          onClick={() => updateField('logoShape', 'natural')}
+                          className={`py-1.5 px-2 rounded-md border text-center transition cursor-pointer ${
+                            (data.logoShape || 'natural') === 'natural'
+                              ? 'border-indigo-600 bg-indigo-50 font-bold text-indigo-900 shadow-2xs'
+                              : 'border-slate-300 bg-white text-slate-700 hover:bg-slate-50'
+                          }`}
+                        >
+                          Natural (স্বাভাবিক)
+                        </button>
+                        <button
+                          type="button"
+                          onClick={() => updateField('logoShape', 'circle')}
+                          className={`py-1.5 px-2 rounded-md border text-center transition cursor-pointer ${
+                            data.logoShape === 'circle'
+                              ? 'border-indigo-600 bg-indigo-50 font-bold text-indigo-900 shadow-2xs'
+                              : 'border-slate-300 bg-white text-slate-700 hover:bg-slate-50'
+                          }`}
+                        >
+                          Circle Seal (গোলাকার)
+                        </button>
+                      </div>
+                    </div>
+                  )}
+                </div>
+              )}
             </div>
           </div>
         )}

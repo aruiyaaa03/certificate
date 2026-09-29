@@ -4,21 +4,40 @@ interface BoardLogoProps {
   customLogoUrl?: string;
   size?: number;
   className?: string;
+  shape?: 'natural' | 'circle';
 }
 
 export const BoardLogo: React.FC<BoardLogoProps> = ({
   customLogoUrl,
-  size = 66,
+  size = 52,
   className = '',
+  shape = 'natural',
 }) => {
   if (customLogoUrl) {
     return (
-      <img
-        src={customLogoUrl}
-        alt="Institution Logo"
-        style={{ width: `${size}px`, height: `${size}px` }}
-        className={`object-contain rounded-full shadow-xs ${className}`}
-      />
+      <div
+        style={{
+          height: `${size}px`,
+          maxHeight: `${size}px`,
+        }}
+        className={`flex items-center justify-center shrink-0 select-none ${className}`}
+      >
+        <img
+          src={customLogoUrl}
+          alt="Certificate Logo"
+          style={{
+            maxHeight: `${size}px`,
+            maxWidth: shape === 'circle' ? `${size}px` : `${Math.round(size * 3.5)}px`,
+            height: `${size}px`,
+            width: shape === 'circle' ? `${size}px` : 'auto',
+          }}
+          className={`object-contain transition-all ${
+            shape === 'circle'
+              ? 'rounded-full aspect-square object-cover shadow-xs border border-amber-500/30'
+              : 'rounded-xs'
+          }`}
+        />
+      </div>
     );
   }
 
