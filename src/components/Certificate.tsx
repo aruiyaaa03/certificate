@@ -18,7 +18,7 @@ const EditableWord: React.FC<{
   onChange: (val: string) => void;
   placeholder?: string;
   isEditable: boolean;
-  fontStyle: React.CSSProperties;
+  fontStyle?: React.CSSProperties;
   className?: string;
   underlineStyle?: 'none' | 'dotted' | 'solid';
 }> = ({
@@ -231,60 +231,58 @@ export const Certificate: React.FC<CertificateProps> = ({
             <div className="flex flex-col gap-0.5 text-left">
               {/* Serial No. with Red Stamp */}
               <div className="flex items-center gap-1 font-semibold text-slate-800 text-xs">
-                <input
-                  type="text"
+                <EditableWord
                   value={data.serialPrefix}
-                  onChange={(e) => updateField('serialPrefix', e.target.value)}
-                  style={{ width: `${Math.max(data.serialPrefix.length + 1, 14)}ch` }}
-                  className="bg-transparent border-b border-transparent hover:border-slate-300 focus:outline-hidden text-slate-800 font-serif text-xs"
+                  onChange={(val) => updateField('serialPrefix', val)}
+                  isEditable={isEditable}
+                  placeholder="Serial No. JBC-22-"
+                  className="text-slate-800 font-serif text-xs font-semibold"
                 />
-                <span className="text-red-700 font-mono tracking-widest font-bold text-xs bg-red-50/80 px-1.5 py-0.5 rounded-xs border border-red-200">
-                  <input
-                    type="text"
+                <span className="text-red-700 font-mono tracking-widest font-bold text-xs bg-red-50/80 px-1.5 py-0.5 rounded-xs border border-red-200 inline-flex items-center">
+                  <EditableWord
                     value={data.serialNumber}
-                    onChange={(e) => updateField('serialNumber', e.target.value)}
-                    style={{ width: `${Math.max(data.serialNumber.length + 1, 7)}ch` }}
-                    className="bg-transparent text-red-700 font-mono tracking-widest font-bold text-xs text-left focus:outline-hidden"
+                    onChange={(val) => updateField('serialNumber', val)}
+                    isEditable={isEditable}
+                    placeholder="0184920"
+                    className="text-red-700 font-mono tracking-widest font-bold text-xs"
                   />
                 </span>
               </div>
 
               {/* ID No. / JBCS No. */}
               <div className="flex items-center gap-1 text-xs mt-0.5">
-                <input
-                  type="text"
+                <EditableWord
                   value={data.idNoLabel}
-                  onChange={(e) => updateField('idNoLabel', e.target.value)}
-                  style={{ width: `${Math.max(data.idNoLabel.length + 1, 8)}ch` }}
-                  className="bg-transparent text-slate-800 font-medium text-[11px] text-left font-serif border-b border-transparent hover:border-slate-300 focus:outline-hidden"
+                  onChange={(val) => updateField('idNoLabel', val)}
+                  isEditable={isEditable}
+                  placeholder="ID No. :"
+                  className="text-slate-800 font-medium text-[11px] font-serif"
                 />
-                <input
-                  type="text"
+                <EditableWord
                   value={data.idNumber}
-                  onChange={(e) => updateField('idNumber', e.target.value)}
-                  style={{ width: `${Math.max(data.idNumber.length + 1, 12)}ch` }}
-                  className="bg-transparent text-slate-900 font-bold text-[11px] text-left font-mono border-b border-transparent hover:border-slate-300 focus:outline-hidden"
-                  placeholder="232227965"
+                  onChange={(val) => updateField('idNumber', val)}
+                  isEditable={isEditable}
+                  placeholder="210984712"
+                  className="text-slate-900 font-bold text-[11px] font-mono"
                 />
               </div>
             </div>
 
             {/* Right Box: Registration Number */}
             <div className="text-right font-serif flex items-center justify-end gap-1 text-slate-800 text-xs font-medium">
-              <input
-                type="text"
+              <EditableWord
                 value={data.registrationNoLabel}
-                onChange={(e) => updateField('registrationNoLabel', e.target.value)}
-                style={{ width: `${Math.max(data.registrationNoLabel.length + 1, 16)}ch` }}
-                className="bg-transparent font-semibold whitespace-nowrap text-right border-b border-transparent hover:border-slate-300 focus:outline-hidden text-xs"
+                onChange={(val) => updateField('registrationNoLabel', val)}
+                isEditable={isEditable}
+                placeholder="Registration No. :"
+                className="font-semibold whitespace-nowrap text-right text-xs"
               />
-              <input
-                type="text"
+              <EditableWord
                 value={data.registrationNo}
-                onChange={(e) => updateField('registrationNo', e.target.value)}
-                style={{ width: `${Math.max(data.registrationNo.length + 1, 20)}ch` }}
-                className="bg-transparent font-mono text-slate-900 font-bold text-xs text-right border-b border-transparent hover:border-slate-300 focus:outline-hidden"
-                placeholder="2013580272/2021-2022"
+                onChange={(val) => updateField('registrationNo', val)}
+                isEditable={isEditable}
+                placeholder="1914205831/2021-2022"
+                className="font-mono text-slate-900 font-bold text-xs text-right"
               />
             </div>
           </div>
@@ -293,34 +291,31 @@ export const Certificate: React.FC<CertificateProps> = ({
           <div className="text-center mt-1 flex flex-col items-center">
             {/* 1. Formal Institution Name: ARIYAN ICT HUB , KUSHTIA */}
             <div className="flex items-center justify-center flex-wrap gap-1 leading-tight">
-              <input
-                type="text"
+              <EditableWord
                 value={data.institutionName}
-                onChange={(e) => updateField('institutionName', e.target.value)}
-                className="font-serif-header text-xl md:text-2xl font-black tracking-wider text-slate-900 uppercase text-center bg-transparent border-b border-transparent hover:border-slate-300 focus:outline-hidden"
+                onChange={(val) => updateField('institutionName', val)}
+                isEditable={isEditable}
                 placeholder="ARIYAN ICT HUB"
-                style={{ width: `${Math.max(data.institutionName.length + 2, 16)}ch` }}
+                className="font-serif-header text-xl md:text-2xl font-black tracking-wider text-slate-900 uppercase text-center"
               />
               <span className="font-serif-header text-xl md:text-2xl font-black text-slate-900">,</span>
-              <input
-                type="text"
+              <EditableWord
                 value={data.institutionLocation}
-                onChange={(e) => updateField('institutionLocation', e.target.value)}
-                className="font-serif-header text-xl md:text-2xl font-black tracking-wider text-slate-900 uppercase text-center bg-transparent border-b border-transparent hover:border-slate-300 focus:outline-hidden"
+                onChange={(val) => updateField('institutionLocation', val)}
+                isEditable={isEditable}
                 placeholder="KUSHTIA"
-                style={{ width: `${Math.max(data.institutionLocation.length + 2, 8)}ch` }}
+                className="font-serif-header text-xl md:text-2xl font-black tracking-wider text-slate-900 uppercase text-center"
               />
             </div>
 
             {/* 2. Middle Point: BANGLADESH */}
             <h2 className="font-serif tracking-[0.4em] text-xs md:text-sm font-bold text-slate-800 uppercase mt-0.5 leading-tight">
-              <input
-                type="text"
+              <EditableWord
                 value={data.country}
-                onChange={(e) => updateField('country', e.target.value)}
-                style={{ width: `${Math.max(data.country.length + 4, 14)}ch` }}
-                className="font-serif tracking-[0.4em] text-xs md:text-sm font-bold text-slate-800 uppercase text-center bg-transparent border-b border-transparent hover:border-slate-300 focus:outline-hidden"
+                onChange={(val) => updateField('country', val)}
+                isEditable={isEditable}
                 placeholder="BANGLADESH"
+                className="font-serif tracking-[0.4em] text-xs md:text-sm font-bold text-slate-800 uppercase text-center"
               />
             </h2>
 
@@ -333,19 +328,18 @@ export const Certificate: React.FC<CertificateProps> = ({
 
             {/* 4. Course / Examination Title: Secondary School Certificate Examination 2023 */}
             <div className="mt-1 text-center w-full flex items-center justify-center">
-              <input
-                type="text"
+              <EditableWord
                 value={data.examTitle || 'Secondary School Certificate Examination 2023'}
-                onChange={(e) => updateField('examTitle', e.target.value)}
-                style={{
+                onChange={(val) => updateField('examTitle', val)}
+                isEditable={isEditable}
+                placeholder="Secondary School Certificate Examination 2023"
+                fontStyle={{
                   fontFamily: "'UnifrakturMaguntia', serif",
                   fontSize: '27px',
                   color: '#0f172a',
                   letterSpacing: '0.02em',
                 }}
-                className="w-full max-w-[920px] font-gothic text-2xl md:text-[27px] text-slate-950 font-normal tracking-wide text-center bg-transparent border-b border-transparent hover:border-slate-300 focus:outline-hidden focus:border-rose-400 py-0.5"
-                placeholder="Secondary School Certificate Examination 2023"
-                title="Examination Title (Click to edit)"
+                className="w-full max-w-[920px] font-gothic text-2xl md:text-[27px] text-slate-950 font-normal tracking-wide text-center py-0.5"
               />
             </div>
           </div>
@@ -362,7 +356,7 @@ export const Certificate: React.FC<CertificateProps> = ({
             transformOrigin: 'center center',
           }}
         >
-          {/* Line 1: This is to certify that [Md. Saidur Rahman Munna] */}
+          {/* Line 1: This is to certify that [Tanvir Hasan Chowdhury] */}
           <div
             className="w-full flex items-baseline justify-center whitespace-nowrap leading-none"
             style={lineGapStyle}
@@ -373,7 +367,7 @@ export const Certificate: React.FC<CertificateProps> = ({
             <EditableWord
               value={data.studentName}
               onChange={(val) => updateField('studentName', val)}
-              placeholder="Md. Saidur Rahman Munna"
+              placeholder="Tanvir Hasan Chowdhury"
               isEditable={isEditable}
               fontStyle={getChangeableStyle(data.changeableFontSize + 2)}
               underlineStyle={data.changeableUnderline}
@@ -381,7 +375,7 @@ export const Certificate: React.FC<CertificateProps> = ({
             />
           </div>
 
-          {/* Line 2: son/daughter of [Md. Mukul Hossen] and [Mst. Bina Khatun] */}
+          {/* Line 2: son/daughter of [Md. Rafiqul Islam] and [Mst. Salma Khatun] */}
           <div
             className="w-full flex items-baseline justify-center whitespace-nowrap leading-none"
             style={lineGapStyle}
@@ -392,7 +386,7 @@ export const Certificate: React.FC<CertificateProps> = ({
             <EditableWord
               value={data.fatherName}
               onChange={(val) => updateField('fatherName', val)}
-              placeholder="Md. Mukul Hossen"
+              placeholder="Md. Rafiqul Islam"
               isEditable={isEditable}
               fontStyle={getChangeableStyle()}
               underlineStyle={data.changeableUnderline}
@@ -403,7 +397,7 @@ export const Certificate: React.FC<CertificateProps> = ({
             <EditableWord
               value={data.motherName}
               onChange={(val) => updateField('motherName', val)}
-              placeholder="Mst. Bina Khatun"
+              placeholder="Mst. Salma Khatun"
               isEditable={isEditable}
               fontStyle={getChangeableStyle()}
               underlineStyle={data.changeableUnderline}
@@ -429,7 +423,7 @@ export const Certificate: React.FC<CertificateProps> = ({
             />
           </div>
 
-          {/* Line 4: bearing Roll Kushtia - 271 No. 306950 duly passed the */}
+          {/* Line 4: bearing Roll Kushtia - 105 No. 148520 duly passed the */}
           <div
             className="w-full flex items-baseline justify-center whitespace-nowrap leading-none"
             style={lineGapStyle}
@@ -440,7 +434,7 @@ export const Certificate: React.FC<CertificateProps> = ({
             <EditableWord
               value={data.centerCode}
               onChange={(val) => updateField('centerCode', val)}
-              placeholder="Kushtia - 271"
+              placeholder="Kushtia - 105"
               isEditable={isEditable}
               fontStyle={getChangeableStyle()}
               underlineStyle={data.changeableUnderline}
@@ -451,7 +445,7 @@ export const Certificate: React.FC<CertificateProps> = ({
             <EditableWord
               value={data.rollNo}
               onChange={(val) => updateField('rollNo', val)}
-              placeholder="306950"
+              placeholder="148520"
               isEditable={isEditable}
               fontStyle={getChangeableStyle()}
               underlineStyle={data.changeableUnderline}
@@ -556,31 +550,29 @@ export const Certificate: React.FC<CertificateProps> = ({
             {/* Left: Place (Jashore) & Result Date (28 July, 2023) */}
             <div className="col-span-4 flex flex-col text-left font-serif text-xs text-slate-800">
               <div className="font-bold text-slate-900 text-sm">
-                <input
-                  type="text"
+                <EditableWord
                   value={data.issuePlace}
-                  onChange={(e) => updateField('issuePlace', e.target.value)}
-                  style={{ width: `${Math.max(data.issuePlace.length + 1, 8)}ch` }}
-                  className="font-bold text-slate-900 text-sm text-left bg-transparent border-b border-transparent hover:border-slate-300 focus:outline-hidden"
+                  onChange={(val) => updateField('issuePlace', val)}
+                  isEditable={isEditable}
                   placeholder="Jashore"
+                  className="font-bold text-slate-900 text-sm text-left"
                 />
               </div>
 
               <div className="flex items-center gap-1 mt-1 text-slate-800 font-medium text-xs">
-                <input
-                  type="text"
+                <EditableWord
                   value={data.resultDateLabel}
-                  onChange={(e) => updateField('resultDateLabel', e.target.value)}
-                  style={{ width: `${Math.max(data.resultDateLabel.length + 1, 28)}ch` }}
-                  className="font-semibold text-slate-800 text-left text-xs bg-transparent border-b border-transparent hover:border-slate-300 focus:outline-hidden"
+                  onChange={(val) => updateField('resultDateLabel', val)}
+                  isEditable={isEditable}
+                  placeholder="Date of Publication of Result :"
+                  className="font-semibold text-slate-800 text-left text-xs"
                 />
-                <input
-                  type="text"
+                <EditableWord
                   value={data.resultDate}
-                  onChange={(e) => updateField('resultDate', e.target.value)}
-                  style={{ width: `${Math.max(data.resultDate.length + 1, 14)}ch` }}
-                  className="font-bold text-slate-900 text-left text-xs bg-transparent border-b border-transparent hover:border-slate-300 focus:outline-hidden"
+                  onChange={(val) => updateField('resultDate', val)}
+                  isEditable={isEditable}
                   placeholder="28 July, 2023"
+                  className="font-bold text-slate-900 text-left text-xs"
                 />
               </div>
             </div>

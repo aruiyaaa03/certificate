@@ -27,6 +27,7 @@
     -webkit-print-color-adjust: exact !important;
     print-color-adjust: exact !important;
     color-adjust: exact !important;
+    overflow: visible !important;
   }
 
   .no-print {
@@ -42,6 +43,7 @@
     margin: 0mm;
   }
 
+  #ssc-certificate-print-area,
   .certificate-container {
     width: 297mm !important;
     height: 210mm !important;
@@ -53,5 +55,18 @@
     page-break-inside: avoid !important;
     page-break-after: avoid !important;
     transform: none !important;
+    overflow: visible !important;
+    box-sizing: border-box !important;
+  }
+
+  /* Ensure all absolute-positioned elements inside the certificate are correctly scaled for A4 paper so text does not get clipped */
+  .certificate-container .absolute {
+    position: absolute !important;
+    box-sizing: border-box !important;
+  }
+
+  .certificate-container svg {
+    max-width: 100% !important;
+    max-height: 100% !important;
   }
 }

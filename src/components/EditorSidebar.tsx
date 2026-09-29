@@ -145,16 +145,16 @@ export const EditorSidebar: React.FC<EditorSidebarProps> = ({
         institutionLocation: 'JASHORE',
         schoolName: 'Collectorate School And College, Kushtia',
         serialPrefix: 'Serial No. JBC-22-',
-        serialNumber: '0232327',
+        serialNumber: '0184920',
         idNoLabel: 'JBCS No. :',
-        idNumber: '232227965',
+        idNumber: '210984712',
         registrationNoLabel: 'Registration No. :',
-        registrationNo: '2013580272/2021-2022',
-        studentName: 'Md. Saidur Rahman Munna',
-        fatherName: 'Md. Mukul Hossen',
-        motherName: 'Mst. Bina Khatun',
-        centerCode: 'Kushtia - 271',
-        rollNo: '306950',
+        registrationNo: '1914205831/2021-2022',
+        studentName: 'Tanvir Hasan Chowdhury',
+        fatherName: 'Md. Rafiqul Islam',
+        motherName: 'Mst. Salma Khatun',
+        centerCode: 'Kushtia - 105',
+        rollNo: '148520',
         examYear: '2023',
         groupName: 'Humanities',
         gpa: '4.22',
@@ -368,7 +368,7 @@ export const EditorSidebar: React.FC<EditorSidebarProps> = ({
                 value={data.studentName}
                 onChange={(e) => updateField('studentName', e.target.value)}
                 className="w-full px-3 py-2 bg-slate-50 border border-slate-300 rounded-md focus:border-rose-500 focus:bg-white focus:outline-hidden text-slate-900 font-medium"
-                placeholder="Md. Saidur Rahman Munna"
+                placeholder="Tanvir Hasan Chowdhury"
               />
             </div>
 
@@ -382,7 +382,7 @@ export const EditorSidebar: React.FC<EditorSidebarProps> = ({
                   value={data.fatherName}
                   onChange={(e) => updateField('fatherName', e.target.value)}
                   className="w-full px-2.5 py-2 bg-slate-50 border border-slate-300 rounded-md focus:border-rose-500 focus:bg-white focus:outline-hidden text-slate-900"
-                  placeholder="Md. Mukul Hossen"
+                  placeholder="Md. Rafiqul Islam"
                 />
               </div>
 
@@ -395,7 +395,7 @@ export const EditorSidebar: React.FC<EditorSidebarProps> = ({
                   value={data.motherName}
                   onChange={(e) => updateField('motherName', e.target.value)}
                   className="w-full px-2.5 py-2 bg-slate-50 border border-slate-300 rounded-md focus:border-rose-500 focus:bg-white focus:outline-hidden text-slate-900"
-                  placeholder="Mst. Bina Khatun"
+                  placeholder="Mst. Salma Khatun"
                 />
               </div>
             </div>
@@ -417,14 +417,14 @@ export const EditorSidebar: React.FC<EditorSidebarProps> = ({
             <div className="grid grid-cols-2 gap-2">
               <div>
                 <label className="block font-semibold text-slate-700 mb-1">
-                  Center / Roll Place (bearing Roll Kushtia - 271)
+                  Center / Roll Place (bearing Roll Kushtia - 105)
                 </label>
                 <input
                   type="text"
                   value={data.centerCode}
                   onChange={(e) => updateField('centerCode', e.target.value)}
                   className="w-full px-2.5 py-1.5 bg-slate-50 border border-slate-300 rounded-md text-slate-900 font-bold"
-                  placeholder="Kushtia - 271"
+                  placeholder="Kushtia - 105"
                 />
               </div>
 
@@ -437,7 +437,7 @@ export const EditorSidebar: React.FC<EditorSidebarProps> = ({
                   value={data.rollNo}
                   onChange={(e) => updateField('rollNo', e.target.value)}
                   className="w-full px-2.5 py-1.5 bg-slate-50 border border-slate-300 rounded-md font-mono text-slate-900 font-bold"
-                  placeholder="306950"
+                  placeholder="148520"
                 />
               </div>
             </div>
@@ -586,7 +586,7 @@ export const EditorSidebar: React.FC<EditorSidebarProps> = ({
                     value={data.serialNumber}
                     onChange={(e) => updateField('serialNumber', e.target.value)}
                     className="w-full px-2 py-1 bg-white border border-red-300 rounded text-red-700 font-mono text-xs font-bold tracking-wider"
-                    placeholder="0232327"
+                    placeholder="0184920"
                   />
                 </div>
               </div>
@@ -609,7 +609,7 @@ export const EditorSidebar: React.FC<EditorSidebarProps> = ({
                     value={data.idNumber}
                     onChange={(e) => updateField('idNumber', e.target.value)}
                     className="w-2/3 px-2 py-1 bg-white border border-slate-300 rounded text-indigo-950 font-bold font-mono text-xs"
-                    placeholder="AIC-2023-784"
+                    placeholder="210984712"
                   />
                 </div>
               </div>
@@ -624,7 +624,7 @@ export const EditorSidebar: React.FC<EditorSidebarProps> = ({
                   value={data.registrationNo}
                   onChange={(e) => updateField('registrationNo', e.target.value)}
                   className="w-full px-2.5 py-1.5 bg-white border border-slate-300 rounded text-slate-900 font-mono text-xs font-bold"
-                  placeholder="2013580272/2022-2023"
+                  placeholder="1914205831/2021-2022"
                 />
               </div>
             </div>
@@ -1088,12 +1088,12 @@ export const EditorSidebar: React.FC<EditorSidebarProps> = ({
 
               <div className="grid grid-cols-2 gap-2">
                 {[
-                  { id: 'arial', name: 'Arial (Default)', sample: 'Md. Saidur Rahman', family: 'Arial, sans-serif' },
-                  { id: 'times', name: 'Times / Serif', sample: 'Md. Saidur Rahman', family: "'Libre Baskerville', serif" },
-                  { id: 'calligraphy', name: 'Calligraphy (Script)', sample: 'Md. Saidur Rahman', family: "'Great Vibes', cursive" },
-                  { id: 'script', name: 'Cursive (Alex Brush)', sample: 'Md. Saidur Rahman', family: "'Alex Brush', cursive" },
-                  { id: 'gothic', name: 'Gothic Old English', sample: 'Md. Saidur Rahman', family: "'UnifrakturMaguntia', serif" },
-                  { id: 'courier', name: 'Courier Typewriter', sample: 'Md. Saidur Rahman', family: "'Courier Prime', monospace" },
+                  { id: 'arial', name: 'Arial (Default)', sample: 'Tanvir Hasan', family: 'Arial, sans-serif' },
+                  { id: 'times', name: 'Times / Serif', sample: 'Tanvir Hasan', family: "'Libre Baskerville', serif" },
+                  { id: 'calligraphy', name: 'Calligraphy (Script)', sample: 'Tanvir Hasan', family: "'Great Vibes', cursive" },
+                  { id: 'script', name: 'Cursive (Alex Brush)', sample: 'Tanvir Hasan', family: "'Alex Brush', cursive" },
+                  { id: 'gothic', name: 'Gothic Old English', sample: 'Tanvir Hasan', family: "'UnifrakturMaguntia', serif" },
+                  { id: 'courier', name: 'Courier Typewriter', sample: 'Tanvir Hasan', family: "'Courier Prime', monospace" },
                 ].map((item) => (
                   <button
                     key={item.id}

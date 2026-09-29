@@ -19,13 +19,13 @@ export interface CertificateData {
   
   // Left side: Serial No. & ID No.
   serialPrefix: string; // "Serial No. JBC-22-"
-  serialNumber: string; // "0232327"
+  serialNumber: string; // "0184920"
   idNoLabel: string; // "JBCS No. :" (or "ID No. :")
-  idNumber: string; // "232227965" (or "AIC-2023-784")
+  idNumber: string; // "210984712" (or "AIC-2023-784")
   
   // Right side: Registration Number
   registrationNoLabel: string; // "Registration No. :"
-  registrationNo: string; // "2013580272/2021-2022"
+  registrationNo: string; // "1914205831/2021-2022"
   
   // Logo
   logoUrl?: string;
